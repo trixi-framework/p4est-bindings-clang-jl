@@ -1,3 +1,6 @@
+using MPI: MPI_Datatype, MPI_Comm, MPI_File
+
+# Define missing types
 const ptrdiff_t = Cptrdiff_t
 
 # Dummy definitions to avoid `UndefVarError`s
@@ -52,9 +55,7 @@ const MPI_SUM = C_NULL
 const MPI_PROD = C_NULL
 const MPI_UNDEFINED = C_NULL
 const MPI_KEYVAL_INVALID = C_NULL
-const MPI_Comm = C_NULL
 const MPI_Group = C_NULL
-const MPI_Datatype = C_NULL
 const MPI_Op = C_NULL
 const MPI_Request = C_NULL
 const MPI_Status = C_NULL
