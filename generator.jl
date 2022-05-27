@@ -3,9 +3,7 @@ using Clang.Generators
 
 cd(@__DIR__)
 
-p4est_prefix = joinpath(@__DIR__, "p4est")
-
-include_dir = joinpath(p4est_prefix, "include")
+include_dir = joinpath(@__DIR__, "p4est_include")
 
 options = load_options(joinpath(@__DIR__, "generator.toml"))
 
