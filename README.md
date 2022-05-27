@@ -103,4 +103,5 @@ Need to write manual postprocessing script that removes offending lines from
 ## Some p4est constants contain weird function definitions
 Add entries like `P4EST_NOTICE` to remove list.
 
-
+## Some MPI types are erroneously deleted where it would be bad
+Replace, e.g. `mpicomm::Cint` by `mpicomm::MPI_Comm`.
