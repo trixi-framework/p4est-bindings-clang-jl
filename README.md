@@ -109,7 +109,7 @@ Replace, e.g. `mpicomm::Cint` by `mpicomm::MPI_Comm`.
 ## Startup latency compared to CBinding.jl-generated bindings
 On Rocinante, we get for the CBinding.jl-generated bindings
 ```shell
-julia --project -e '@time begin include("libp4est-wrap.jl"); using LibP4est end'
+julia --project -e '@time begin include("libp4est-wrap.jl"); using .LibP4est end'
  12.345134 seconds (32.51 M allocations: 1.767 GiB, 2.72% gc time, 83.41% compilation time)
 ```
 For the Clang.jl-generated bindings in this repo, we get
