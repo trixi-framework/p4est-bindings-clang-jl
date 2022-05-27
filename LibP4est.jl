@@ -855,7 +855,7 @@ void sc_init (sc_MPI_Comm mpicomm, int catch_signals, int print_backtrace, sc_lo
 ```
 """
 function sc_init(mpicomm, catch_signals, print_backtrace, log_handler, log_threshold)
-    @ccall libp4est.sc_init(mpicomm::Cint, catch_signals::Cint, print_backtrace::Cint, log_handler::sc_log_handler_t, log_threshold::Cint)::Cvoid
+    @ccall libp4est.sc_init(mpicomm::MPI_Comm, catch_signals::Cint, print_backtrace::Cint, log_handler::sc_log_handler_t, log_threshold::Cint)::Cvoid
 end
 
 """
@@ -3129,7 +3129,7 @@ void sc_mpi_read (MPI_File mpifile, const void *ptr, size_t zcount, sc_MPI_Datat
 ```
 """
 function sc_mpi_read(mpifile, ptr, zcount, t, errmsg)
-    @ccall libp4est.sc_mpi_read(mpifile::Cint, ptr::Ptr{Cvoid}, zcount::Csize_t, t::Cint, errmsg::Cstring)::Cvoid
+    @ccall libp4est.sc_mpi_read(mpifile::MPI_File, ptr::Ptr{Cvoid}, zcount::Csize_t, t::Cint, errmsg::Cstring)::Cvoid
 end
 
 """
@@ -3141,7 +3141,7 @@ void sc_mpi_write (MPI_File mpifile, const void *ptr, size_t zcount, sc_MPI_Data
 ```
 """
 function sc_mpi_write(mpifile, ptr, zcount, t, errmsg)
-    @ccall libp4est.sc_mpi_write(mpifile::Cint, ptr::Ptr{Cvoid}, zcount::Csize_t, t::Cint, errmsg::Cstring)::Cvoid
+    @ccall libp4est.sc_mpi_write(mpifile::MPI_File, ptr::Ptr{Cvoid}, zcount::Csize_t, t::Cint, errmsg::Cstring)::Cvoid
 end
 
 """
@@ -4425,7 +4425,7 @@ const p4est_inspect_t = p4est_inspect
 | inspect                   | algorithmic switches                                                                                             |
 """
 struct p4est
-    mpicomm::Cint
+    mpicomm::MPI_Comm
     mpisize::Cint
     mpirank::Cint
     mpicomm_owned::Cint
@@ -4565,7 +4565,7 @@ p4est_t *p4est_new (sc_MPI_Comm mpicomm, p4est_connectivity_t * connectivity, si
 ```
 """
 function p4est_new(mpicomm, connectivity, data_size, init_fn, user_pointer)
-    @ccall libp4est.p4est_new(mpicomm::Cint, connectivity::Ptr{p4est_connectivity_t}, data_size::Csize_t, init_fn::p4est_init_t, user_pointer::Ptr{Cvoid})::Ptr{p4est_t}
+    @ccall libp4est.p4est_new(mpicomm::MPI_Comm, connectivity::Ptr{p4est_connectivity_t}, data_size::Csize_t, init_fn::p4est_init_t, user_pointer::Ptr{Cvoid})::Ptr{p4est_t}
 end
 
 """
@@ -4773,7 +4773,7 @@ p4est_t *p4est_load (const char *filename, sc_MPI_Comm mpicomm, size_t data_size
 ```
 """
 function p4est_load(filename, mpicomm, data_size, load_data, user_pointer, connectivity)
-    @ccall libp4est.p4est_load(filename::Cstring, mpicomm::Cint, data_size::Csize_t, load_data::Cint, user_pointer::Ptr{Cvoid}, connectivity::Ptr{Ptr{p4est_connectivity_t}})::Ptr{p4est_t}
+    @ccall libp4est.p4est_load(filename::Cstring, mpicomm::MPI_Comm, data_size::Csize_t, load_data::Cint, user_pointer::Ptr{Cvoid}, connectivity::Ptr{Ptr{p4est_connectivity_t}})::Ptr{p4est_t}
 end
 
 """
@@ -5866,7 +5866,7 @@ end
 const p4est_lnodes_code_t = Int8
 
 struct p4est_lnodes
-    mpicomm::Cint
+    mpicomm::MPI_Comm
     num_local_nodes::p4est_locidx_t
     owned_count::p4est_locidx_t
     global_offset::p4est_gloidx_t
@@ -6627,7 +6627,7 @@ p4est_t *p4est_new_ext (sc_MPI_Comm mpicomm, p4est_connectivity_t * connectivity
 ```
 """
 function p4est_new_ext(mpicomm, connectivity, min_quadrants, min_level, fill_uniform, data_size, init_fn, user_pointer)
-    @ccall libp4est.p4est_new_ext(mpicomm::Cint, connectivity::Ptr{p4est_connectivity_t}, min_quadrants::p4est_locidx_t, min_level::Cint, fill_uniform::Cint, data_size::Csize_t, init_fn::p4est_init_t, user_pointer::Ptr{Cvoid})::Ptr{p4est_t}
+    @ccall libp4est.p4est_new_ext(mpicomm::MPI_Comm, connectivity::Ptr{p4est_connectivity_t}, min_quadrants::p4est_locidx_t, min_level::Cint, fill_uniform::Cint, data_size::Csize_t, init_fn::p4est_init_t, user_pointer::Ptr{Cvoid})::Ptr{p4est_t}
 end
 
 """
@@ -6668,7 +6668,7 @@ p4est_t *p4est_copy_ext (p4est_t * input, int copy_data, int duplicate_mpicomm);
 ```
 """
 function p4est_copy_ext(input, copy_data, duplicate_mpicomm)
-    @ccall libp4est.p4est_copy_ext(input::Ptr{p4est_t}, copy_data::Cint, duplicate_mpicomm::Cint)::Ptr{p4est_t}
+    @ccall libp4est.p4est_copy_ext(input::Ptr{p4est_t}, copy_data::Cint, duplicate_mpicomm::MPI_Comm)::Ptr{p4est_t}
 end
 
 """
@@ -6831,7 +6831,7 @@ p4est_t *p4est_load_ext (const char *filename, sc_MPI_Comm mpicomm, size_t data_
 ```
 """
 function p4est_load_ext(filename, mpicomm, data_size, load_data, autopartition, broadcasthead, user_pointer, connectivity)
-    @ccall libp4est.p4est_load_ext(filename::Cstring, mpicomm::Cint, data_size::Csize_t, load_data::Cint, autopartition::Cint, broadcasthead::Cint, user_pointer::Ptr{Cvoid}, connectivity::Ptr{Ptr{p4est_connectivity_t}})::Ptr{p4est_t}
+    @ccall libp4est.p4est_load_ext(filename::Cstring, mpicomm::MPI_Comm, data_size::Csize_t, load_data::Cint, autopartition::Cint, broadcasthead::Cint, user_pointer::Ptr{Cvoid}, connectivity::Ptr{Ptr{p4est_connectivity_t}})::Ptr{p4est_t}
 end
 
 """
@@ -6843,7 +6843,7 @@ p4est_t *p4est_source_ext (sc_io_source_t * src, sc_MPI_Comm mpicomm, size_t dat
 ```
 """
 function p4est_source_ext(src, mpicomm, data_size, load_data, autopartition, broadcasthead, user_pointer, connectivity)
-    @ccall libp4est.p4est_source_ext(src::Ptr{sc_io_source_t}, mpicomm::Cint, data_size::Csize_t, load_data::Cint, autopartition::Cint, broadcasthead::Cint, user_pointer::Ptr{Cvoid}, connectivity::Ptr{Ptr{p4est_connectivity_t}})::Ptr{p4est_t}
+    @ccall libp4est.p4est_source_ext(src::Ptr{sc_io_source_t}, mpicomm::MPI_Comm, data_size::Csize_t, load_data::Cint, autopartition::Cint, broadcasthead::Cint, user_pointer::Ptr{Cvoid}, connectivity::Ptr{Ptr{p4est_connectivity_t}})::Ptr{p4est_t}
 end
 
 """
@@ -8439,7 +8439,7 @@ end
 | root\\_len             | height of the domain                                                                                       |
 """
 struct p6est
-    mpicomm::Cint
+    mpicomm::MPI_Comm
     mpisize::Cint
     mpirank::Cint
     mpicomm_owned::Cint
@@ -8549,7 +8549,7 @@ p6est_t *p6est_new (sc_MPI_Comm mpicomm, p6est_connectivity_t * connectivity, si
 ```
 """
 function p6est_new(mpicomm, connectivity, data_size, init_fn, user_pointer)
-    @ccall libp4est.p6est_new(mpicomm::Cint, connectivity::Ptr{p6est_connectivity_t}, data_size::Csize_t, init_fn::p6est_init_t, user_pointer::Ptr{Cvoid})::Ptr{p6est_t}
+    @ccall libp4est.p6est_new(mpicomm::MPI_Comm, connectivity::Ptr{p6est_connectivity_t}, data_size::Csize_t, init_fn::p6est_init_t, user_pointer::Ptr{Cvoid})::Ptr{p6est_t}
 end
 
 """
@@ -8860,7 +8860,7 @@ p6est_t *p6est_load (const char *filename, sc_MPI_Comm mpicomm, size_t data_size
 ```
 """
 function p6est_load(filename, mpicomm, data_size, load_data, user_pointer, connectivity)
-    @ccall libp4est.p6est_load(filename::Cstring, mpicomm::Cint, data_size::Csize_t, load_data::Cint, user_pointer::Ptr{Cvoid}, connectivity::Ptr{Ptr{p6est_connectivity_t}})::Ptr{p6est_t}
+    @ccall libp4est.p6est_load(filename::Cstring, mpicomm::MPI_Comm, data_size::Csize_t, load_data::Cint, user_pointer::Ptr{Cvoid}, connectivity::Ptr{Ptr{p6est_connectivity_t}})::Ptr{p6est_t}
 end
 
 """
@@ -8968,7 +8968,7 @@ p6est_t *p6est_new_ext (sc_MPI_Comm mpicomm, p6est_connectivity_t * connectivity
 ```
 """
 function p6est_new_ext(mpicomm, connectivity, min_quadrants, min_level, min_zlevel, num_zroot, fill_uniform, data_size, init_fn, user_pointer)
-    @ccall libp4est.p6est_new_ext(mpicomm::Cint, connectivity::Ptr{p6est_connectivity_t}, min_quadrants::p4est_locidx_t, min_level::Cint, min_zlevel::Cint, num_zroot::Cint, fill_uniform::Cint, data_size::Csize_t, init_fn::p6est_init_t, user_pointer::Ptr{Cvoid})::Ptr{p6est_t}
+    @ccall libp4est.p6est_new_ext(mpicomm::MPI_Comm, connectivity::Ptr{p6est_connectivity_t}, min_quadrants::p4est_locidx_t, min_level::Cint, min_zlevel::Cint, num_zroot::Cint, fill_uniform::Cint, data_size::Csize_t, init_fn::p6est_init_t, user_pointer::Ptr{Cvoid})::Ptr{p6est_t}
 end
 
 """
@@ -8987,7 +8987,7 @@ p6est_t *p6est_copy_ext (p6est_t * input, int copy_data, int duplicate_mpicomm);
 ```
 """
 function p6est_copy_ext(input, copy_data, duplicate_mpicomm)
-    @ccall libp4est.p6est_copy_ext(input::Ptr{p6est_t}, copy_data::Cint, duplicate_mpicomm::Cint)::Ptr{p6est_t}
+    @ccall libp4est.p6est_copy_ext(input::Ptr{p6est_t}, copy_data::Cint, duplicate_mpicomm::MPI_Comm)::Ptr{p6est_t}
 end
 
 """
@@ -9024,7 +9024,7 @@ p6est_t *p6est_load_ext (const char *filename, sc_MPI_Comm mpicomm, size_t data_
 ```
 """
 function p6est_load_ext(filename, mpicomm, data_size, load_data, autopartition, broadcasthead, user_pointer, connectivity)
-    @ccall libp4est.p6est_load_ext(filename::Cstring, mpicomm::Cint, data_size::Csize_t, load_data::Cint, autopartition::Cint, broadcasthead::Cint, user_pointer::Ptr{Cvoid}, connectivity::Ptr{Ptr{p6est_connectivity_t}})::Ptr{p6est_t}
+    @ccall libp4est.p6est_load_ext(filename::Cstring, mpicomm::MPI_Comm, data_size::Csize_t, load_data::Cint, autopartition::Cint, broadcasthead::Cint, user_pointer::Ptr{Cvoid}, connectivity::Ptr{Ptr{p6est_connectivity_t}})::Ptr{p6est_t}
 end
 
 """
@@ -9311,7 +9311,7 @@ const p8est_inspect_t = p8est_inspect
 | inspect                   | algorithmic switches                                                                                             |
 """
 struct p8est
-    mpicomm::Cint
+    mpicomm::MPI_Comm
     mpisize::Cint
     mpirank::Cint
     mpicomm_owned::Cint
@@ -9451,7 +9451,7 @@ p8est_t *p8est_new (sc_MPI_Comm mpicomm, p8est_connectivity_t * connectivity, si
 ```
 """
 function p8est_new(mpicomm, connectivity, data_size, init_fn, user_pointer)
-    @ccall libp4est.p8est_new(mpicomm::Cint, connectivity::Ptr{p8est_connectivity_t}, data_size::Csize_t, init_fn::p8est_init_t, user_pointer::Ptr{Cvoid})::Ptr{p8est_t}
+    @ccall libp4est.p8est_new(mpicomm::MPI_Comm, connectivity::Ptr{p8est_connectivity_t}, data_size::Csize_t, init_fn::p8est_init_t, user_pointer::Ptr{Cvoid})::Ptr{p8est_t}
 end
 
 """
@@ -9659,7 +9659,7 @@ p8est_t *p8est_load (const char *filename, sc_MPI_Comm mpicomm, size_t data_size
 ```
 """
 function p8est_load(filename, mpicomm, data_size, load_data, user_pointer, connectivity)
-    @ccall libp4est.p8est_load(filename::Cstring, mpicomm::Cint, data_size::Csize_t, load_data::Cint, user_pointer::Ptr{Cvoid}, connectivity::Ptr{Ptr{p8est_connectivity_t}})::Ptr{p8est_t}
+    @ccall libp4est.p8est_load(filename::Cstring, mpicomm::MPI_Comm, data_size::Csize_t, load_data::Cint, user_pointer::Ptr{Cvoid}, connectivity::Ptr{Ptr{p8est_connectivity_t}})::Ptr{p8est_t}
 end
 
 """
@@ -10872,7 +10872,7 @@ end
 const p8est_lnodes_code_t = Int16
 
 struct p8est_lnodes
-    mpicomm::Cint
+    mpicomm::MPI_Comm
     num_local_nodes::p4est_locidx_t
     owned_count::p4est_locidx_t
     global_offset::p4est_gloidx_t
@@ -11947,7 +11947,7 @@ p8est_t *p8est_new_ext (sc_MPI_Comm mpicomm, p8est_connectivity_t * connectivity
 ```
 """
 function p8est_new_ext(mpicomm, connectivity, min_quadrants, min_level, fill_uniform, data_size, init_fn, user_pointer)
-    @ccall libp4est.p8est_new_ext(mpicomm::Cint, connectivity::Ptr{p8est_connectivity_t}, min_quadrants::p4est_locidx_t, min_level::Cint, fill_uniform::Cint, data_size::Csize_t, init_fn::p8est_init_t, user_pointer::Ptr{Cvoid})::Ptr{p8est_t}
+    @ccall libp4est.p8est_new_ext(mpicomm::MPI_Comm, connectivity::Ptr{p8est_connectivity_t}, min_quadrants::p4est_locidx_t, min_level::Cint, fill_uniform::Cint, data_size::Csize_t, init_fn::p8est_init_t, user_pointer::Ptr{Cvoid})::Ptr{p8est_t}
 end
 
 """
@@ -11988,7 +11988,7 @@ p8est_t *p8est_copy_ext (p8est_t * input, int copy_data, int duplicate_mpicomm);
 ```
 """
 function p8est_copy_ext(input, copy_data, duplicate_mpicomm)
-    @ccall libp4est.p8est_copy_ext(input::Ptr{p8est_t}, copy_data::Cint, duplicate_mpicomm::Cint)::Ptr{p8est_t}
+    @ccall libp4est.p8est_copy_ext(input::Ptr{p8est_t}, copy_data::Cint, duplicate_mpicomm::MPI_Comm)::Ptr{p8est_t}
 end
 
 """
@@ -12151,7 +12151,7 @@ p8est_t *p8est_load_ext (const char *filename, sc_MPI_Comm mpicomm, size_t data_
 ```
 """
 function p8est_load_ext(filename, mpicomm, data_size, load_data, autopartition, broadcasthead, user_pointer, connectivity)
-    @ccall libp4est.p8est_load_ext(filename::Cstring, mpicomm::Cint, data_size::Csize_t, load_data::Cint, autopartition::Cint, broadcasthead::Cint, user_pointer::Ptr{Cvoid}, connectivity::Ptr{Ptr{p8est_connectivity_t}})::Ptr{p8est_t}
+    @ccall libp4est.p8est_load_ext(filename::Cstring, mpicomm::MPI_Comm, data_size::Csize_t, load_data::Cint, autopartition::Cint, broadcasthead::Cint, user_pointer::Ptr{Cvoid}, connectivity::Ptr{Ptr{p8est_connectivity_t}})::Ptr{p8est_t}
 end
 
 """
@@ -12163,7 +12163,7 @@ p8est_t *p8est_source_ext (sc_io_source_t * src, sc_MPI_Comm mpicomm, size_t dat
 ```
 """
 function p8est_source_ext(src, mpicomm, data_size, load_data, autopartition, broadcasthead, user_pointer, connectivity)
-    @ccall libp4est.p8est_source_ext(src::Ptr{sc_io_source_t}, mpicomm::Cint, data_size::Csize_t, load_data::Cint, autopartition::Cint, broadcasthead::Cint, user_pointer::Ptr{Cvoid}, connectivity::Ptr{Ptr{p8est_connectivity_t}})::Ptr{p8est_t}
+    @ccall libp4est.p8est_source_ext(src::Ptr{sc_io_source_t}, mpicomm::MPI_Comm, data_size::Csize_t, load_data::Cint, autopartition::Cint, broadcasthead::Cint, user_pointer::Ptr{Cvoid}, connectivity::Ptr{Ptr{p8est_connectivity_t}})::Ptr{p8est_t}
 end
 
 """
