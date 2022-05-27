@@ -12,6 +12,30 @@ The general process for creating bindings with Clang.jl is as follows:
 8. Go back to 3.
 9. Despair.
 
+If you want to try this yourself using this repo, set up all dependencies using
+```shell
+julia --project -e 'using Pkg; Pkg.instantiate()'
+```
+This is only required once.
+
+To generate new bindings, run
+```shell
+julia --project generator.jl && ./fixes.sh
+```
+to create a new `LibP4est.jl` file. If you did not get an error yet - 🥳🕺
+
+Next, try if it actually works by running the following smoke test after
+starting the REPL with `julia --project`:
+```julia
+julia> include("LibP4est.jl")
+Main.LibP4est
+
+julia> using .LibP4est
+
+julia> (p4est_version_major(), p4est_version_minor()) == (2, 8)
+true
+```
+
 ## Types are missing
 Need an `prologue.jl` file with
 ```julia
