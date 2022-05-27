@@ -105,3 +105,17 @@ Add entries like `P4EST_NOTICE` to remove list.
 
 ## Some MPI types are erroneously deleted where it would be bad
 Replace, e.g. `mpicomm::Cint` by `mpicomm::MPI_Comm`.
+
+## Startup latency compared to CBinding.jl-generated bindings
+On Rocinante, we get for the CBinding.jl-generated bindings
+```shell
+julia --project -e '@time begin include("libp4est-wrap.jl"); using LibP4est end'
+ 12.345134 seconds (32.51 M allocations: 1.767 GiB, 2.72% gc time, 83.41% compilation time)
+```
+For the Clang.jl-generated bindings in this repo, we get
+```shell
+julia --project -e '@time begin include("LibP4est.jl"); using .LibP4est end'
+  1.544455 seconds (1.18 M allocations: 65.286 MiB, 0.49% gc time, 21.00% compilation time)
+```
+Thus, using the less convenient Clang.jl-generated binaries *considerably*
+reduces startup latency (1.5 seconds instead of 12.3 seconds) and memory use (65 MiB vs. 1,767 MiB)
