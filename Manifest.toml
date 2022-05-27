@@ -12,6 +12,12 @@ uuid = "56f22d72-fd6d-98f1-02f0-08ddc0907c33"
 [[deps.Base64]]
 uuid = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
 
+[[deps.CBinding]]
+deps = ["Libdl", "Random", "Test"]
+git-tree-sha1 = "358e34d0ea8823812d17525fc581fcc332cf4874"
+uuid = "d43a6710-96b8-4a2d-833c-c424785e5374"
+version = "0.9.4"
+
 [[deps.CEnum]]
 git-tree-sha1 = "eb4cb44a499229b3b8426dcfb5dd85333951ff90"
 uuid = "fa961155-64e5-5f13-b03f-caf6b980ea82"
@@ -175,6 +181,10 @@ uuid = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
 [[deps.Tar]]
 deps = ["ArgTools", "SHA"]
 uuid = "a4e569a6-e804-4fa4-b0f3-eef7a1d5b13e"
+
+[[deps.Test]]
+deps = ["InteractiveUtils", "Logging", "Random", "Serialization"]
+uuid = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [[deps.UUIDs]]
 deps = ["Random", "SHA"]
