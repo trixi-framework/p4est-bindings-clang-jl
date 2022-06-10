@@ -1,7 +1,7 @@
-baremodule LibP4est
+baremodule P4estViaCBinding0
   using CBinding: 𝐣𝐥
   using MPI: MPI_Datatype, MPI_Comm, MPI_File
-  
+
   # Introduce standard integer types
   const size_t   = 𝐣𝐥.Csize_t
   const ssize_t  = 𝐣𝐥.Cssize_t
@@ -17,4 +17,3 @@ baremodule LibP4est
 
   𝐣𝐥.Base.include((𝐣𝐥.@__MODULE__), "libp4est-v2.8.0-cbinding.jl")
 end
-
