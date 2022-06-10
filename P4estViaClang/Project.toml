@@ -1,0 +1,9 @@
+name = "P4estViaClang"
+uuid = "2250a9d4-d2d8-4cc7-8b8f-fa98575254a5"
+authors = ["Hendrik Ranocha <mail@ranocha.de>"]
+version = "0.1.0"
+
+[deps]
+CEnum = "fa961155-64e5-5f13-b03f-caf6b980ea82"
+MPI = "da04e1cc-30fd-572f-bb4f-1f8673147195"
+P4est_jll = "6b5a15aa-cf52-5330-8376-5e5d90283449"
