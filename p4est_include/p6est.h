@@ -283,7 +283,7 @@ typedef int         (*p6est_weight_t) (p6est_t * p6est,
                                        p4est_quadrant_t * column,
                                        p2est_quadrant_t * layer);
 
-extern void        *P2EST_DATA_UNINITIALIZED;
+// extern void        *P2EST_DATA_UNINITIALIZED;
 
 /** set statically allocated quadrant to defined values */
 #define P2EST_QUADRANT_INIT(q) \

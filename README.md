@@ -119,3 +119,38 @@ julia --project -e '@time begin include("LibP4est.jl"); using .LibP4est end'
 ```
 Thus, using the less convenient Clang.jl-generated binaries *considerably*
 reduces startup latency (1.5 seconds instead of 12.3 seconds) and memory use (65 MiB vs. 1,767 MiB)
+
+However, note that this measures basically the precompilation time. To work
+with precompiled code, you need to put it in packages. Here, we created
+subfolders `P4estViaCBinding0` for the approach using CBinding.jl v0.9 and
+`P4estViaClang` for the approach using Clang.jl. Then, we get (on another
+system)
+```shell
+julia --project=P4estViaCBinding0 -e '@time @eval using P4estViaCBinding0'
+  7.707895 seconds (361.77 k allocations: 26.919 MiB, 0.44% compilation time)
+
+julia --project=P4estViaCBinding0 -e '@time @eval using P4estViaCBinding0'
+  0.133317 seconds (333.90 k allocations: 25.119 MiB, 17.93% compilation time)
+```
+and
+```shell
+julia --project=P4estViaClang -e '@time @eval using P4estViaClang'
+  1.442068 seconds (141.51 k allocations: 12.155 MiB, 2.35% compilation time)
+
+julia --project=P4estViaClang -e '@time @eval using P4estViaClang'
+  0.068284 seconds (113.65 k allocations: 10.355 MiB, 35.38% compilation time)
+```
+The first result each includes precompilation, the second one doesn't.
+
+We can also use the same approach with CBinding.jl v1:
+```shell
+julia --project=P4estViaCBinding1 -e '@time @eval using P4estViaCBinding1'
+┌ Warning: Failed to find `sc_memory_check_noerr` in:
+│   ~/.julia/artifacts/0a2d5cebfd9e9b6072a1283ba38086a7e8211f37/lib/libp4est
+│   or the Julia process
+└ @ CBinding ~/.julia/packages/CBinding/U3ykW/src/context.jl:48
+  6.922208 seconds (454.20 k allocations: 32.493 MiB, 0.50% compilation time)
+
+julia --project=P4estViaCBinding1 -e '@time @eval using P4estViaCBinding1'
+  0.169842 seconds (426.02 k allocations: 30.664 MiB, 14.36% compilation time)
+```
